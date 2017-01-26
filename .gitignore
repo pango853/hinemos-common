@@ -1,8 +1,18 @@
+ .DA_Store
 Thumbs.db
-.DS_Store
 *~
 *.swp
 
-/bin/
-/target/
+.gradle/
+
+# output
+build/
+bin/
+.classpath
+.project
+.settings/
+
+# libs
+commonlib/
+wslib/
 
