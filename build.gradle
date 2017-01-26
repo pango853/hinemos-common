@@ -1,0 +1,71 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+def jarName = 'HinemosCommon'
+
+project.group = 'hinemos'
+version = '5.0.3'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+repositories{
+	mavenCentral()
+}
+dependencies{
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+	compile group: 'log4j', name: 'log4j', version: '1.2.17'
+}
+
+eclipse{
+	project{
+		name = jarName 
+	}
+}
+
+tasks.withType(JavaCompile){
+	options.encoding = 'UTF-8'
+}
+jar{
+	manifest{
+		attributes(
+			'Hinemos-Version': version,
+			'Build-Date': new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC')))
+	}
+
+}
+
+// Rename jar for deploying to Hinemos
+task export(type: Copy, dependsOn: build){
+	description 'Rename the jar file to its original name then you can replace to Hinemos directly.'
+	from "${rootProject.buildDir}/${rootProject.libsDirName}"
+	into "${rootProject.buildDir}/${rootProject.libsDirName}"
+	rename "${project.name}-$version", jarName
+}
+
+
+// Doc
+task sourcesJar(type: Jar, dependsOn: classes){
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+task javadocJar(type: Jar, dependsOn: javadoc){
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+artifacts{
+	archives sourcesJar
+	//archives javadocJar
+}
+
+// Add *.properties under eacho source folder
+sourceSets{
+	main{
+		resources{
+			srcDir 'src/main/java'
+			exclude '*.java'
+		}
+	}
+}
+
