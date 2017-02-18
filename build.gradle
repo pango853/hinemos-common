@@ -39,8 +39,10 @@ jar{
 // Rename jar for deploying to Hinemos
 task export(type: Copy, dependsOn: build){
 	description 'Rename the jar file to its original name then you can replace to Hinemos directly.'
-	from "${rootProject.buildDir}/${rootProject.libsDirName}"
-	into "${rootProject.buildDir}/${rootProject.libsDirName}"
+	//from "${rootProject.buildDir}/${rootProject.libsDirName}"
+	//into "${rootProject.buildDir}/${rootProject.libsDirName}"
+	from "${buildDir}/${libsDirName}"
+	into "${buildDir}/${libsDirName}"
 	rename "${project.name}-$version", jarName
 }
 
